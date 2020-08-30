@@ -1613,7 +1613,7 @@ void get_mouse_input(unsigned port, uint32_t *zapdata)
       trigger = input_cb( port, RETRO_DEVICE_LIGHTGUN, 0, RETRO_DEVICE_ID_LIGHTGUN_TRIGGER );
       AuxA = input_cb( port, RETRO_DEVICE_LIGHTGUN, 0, RETRO_DEVICE_ID_LIGHTGUN_AUX_A );
 
-      if ( offscreen || offscreen_shot )
+      if ( offscreen || offscreen_shot || AuxA)
       {
          zapdata[0] = 0;
          zapdata[1] = 0;
@@ -1629,9 +1629,16 @@ void get_mouse_input(unsigned port, uint32_t *zapdata)
 
       if ( trigger)
       {
-		    zapdata[2] |= 0x1; //normal shot
-	      if (offscreen) zapdata[2] |= 0x2;
-	    }
+	      if (offscreen)
+	      {
+	      	zapdata[2] |= 0x2;
+	      }
+	      else
+	      {
+		//normal shot
+		zapdata[2] |= 0x1;
+	      }
+      }
 	   
       if (offscreen_shot || AuxA) zapdata[2] |= 0x2;
    }
